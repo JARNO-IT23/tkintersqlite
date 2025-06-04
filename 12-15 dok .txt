@@ -1,0 +1,49 @@
+sqlite3 jarno.db
+CREATE TABLE kasutajad (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    telefon TEXT NOT NULL
+);
+
+ALTER TABLE kasutajad RENAME TO users;
+ALTER TABLE users RENAME COLUMN telefon TO phone;
+ALTER TABLE users ADD COLUMN image TEXT;
+INSERT INTO users (first_name, last_name, email, phone, image)
+VALUES ('Rain', 'Tamm', 'rain@example.com', '3725555555', 'rain.jpg');
+
+INSERT INTO users (first_name, last_name, email, phone, image)
+VALUES ('Mati', 'Kask', 'mati@example.com', '3724444444', 'mati.jpg');
+
+SELECT * FROM users;
+.read users.sql
+SELECT * FROM users ORDER BY last_name LIMIT 3;
+
+SELECT * FROM users
+WHERE first_name LIKE 'G%' AND email LIKE '%.com'
+ORDER BY email DESC;
+
+SELECT first_name, last_name, phone,
+CASE
+    WHEN phone LIKE '372%' THEN 'EE'
+    ELSE 'MUU'
+END AS ee_number
+FROM users;
+
+SELECT first_name, last_name, phone,
+CASE
+    WHEN email LIKE '%.edu' OR email LIKE '%.gov' THEN 'HARIDUS'
+    ELSE 'MUU'
+END AS domeen
+FROM users
+WHERE phone LIKE '372%'
+ORDER BY last_name
+LIMIT 1;
+UPDATE users SET email = 'muudetud@gmail.com', phone = '123'
+WHERE first_name = 'Rain' AND last_name = 'Tamm';
+
+DELETE FROM users WHERE id BETWEEN 5 AND 10;
+
+SELECT * FROM users LIMIT 10;
+.save jarno.db
